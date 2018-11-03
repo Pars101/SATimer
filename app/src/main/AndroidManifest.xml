@@ -16,6 +16,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name="com.example.mrleo.satimer.Alarm"
+            android:enabled="true"
+            android:exported="true">
+        </receiver>
+
+        <service android:name=".SpeechService" >
+        </service>
+
     </application>
 
 </manifest>
