@@ -6,18 +6,34 @@ package com.example.mrleo.satimer;
 
 public class Period {
     private int minutes;
-    private String message;
+    private String session;
+    private int reminderTime;
+    private int restTime;
 
-    public Period(int minutes, String message) {
+    public Period(int minutes, String session) {
+        this(minutes, session, 0, 0);
+    }
+
+    public Period(int minutes, String session, int reminderTime, int restTime) {
         this.minutes = minutes;
-        this.message = message;
+        this.session = session;
+        this.reminderTime = reminderTime;
+        this.restTime = restTime;
     }
 
     public int getMinutes() {
         return minutes;
     }
 
-    public String getMessage() {
-        return message;
+    public String getSession() {
+        return session;
+    }
+
+    public int getReminderTime() {
+        return reminderTime;
+    }
+
+    public int getRestTime() {
+        return restTime;
     }
 }
