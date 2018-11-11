@@ -17,25 +17,27 @@ public class PeriodManager {
         return null;
     }
 
+    public ArrayList<Period> getPeriods(){
+        return periods;
+    }
+
     private void initPeriods(){
         periods = new ArrayList<Period>();
-        /*
-        periods.add(new Period(50, "You have fifteen minutes to finish reading session."));
-        periods.add(new Period(15, "Congratulations! You finished reading session. Have ten minutes rest"));
-        periods.add(new Period(10, "Rest is over, start writing and language session."));
-        periods.add(new Period(25, "You have ten minutes to finish writing and language session."));
-        periods.add(new Period(10, "Congratulations, you finished writing and language session. Now start math without calculator session."));
-        periods.add(new Period(5, "You have 5 minutes to finish math without calculator session."));
-        periods.add(new Period(135, "Congratulations, you finished math without calculator session. Have five minutes rest."));
-        periods.add(new Period(140, "Rest is over, start math with calculator session."));
-        periods.add(new Period(180, "You have fifteen minutes to finish math with calculator session."));
-        periods.add(new Period(195, "Congratulations, you finished math with calculator session."));
-        */
 
-        periods.add(new Period(3, "reading", 2, 2));
-        periods.add(new Period(5, "writing and language", 2, 1));
-        periods.add(new Period(2, "math with calculator"));
-        //periods.add(new Period(3, "You have ten minutes to finish writing and language session."));
-        //periods.add(new Period(3, "Congratulations, you finished math with calculator session."));
+        /*
+        periods.add(new Period(65, "Reading", 15, false));
+        periods.add(new Period(10, "Break", 0, true));
+        periods.add(new Period(35, "Writing and language", 10, false));
+        periods.add(new Period(25, "Math without calculator", 5, false));
+        periods.add(new Period(5, "Break", 0, true));
+        periods.add(new Period(55, "Math with calculator", 15, false));
+*/
+
+        periods.add(new Period(3, "Reading", 1, false));
+        periods.add(new Period(2, "Break", 0, true));
+        periods.add(new Period(2, "Writing and language", 1, false));
+        periods.add(new Period(2, "Math without calculator", 1, false));
+        periods.add(new Period(1, "Break", 0, true));
+        periods.add(new Period(4, "Math with calculator", 2, false));
     }
 }

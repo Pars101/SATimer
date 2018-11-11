@@ -8,17 +8,13 @@ public class Period {
     private int minutes;
     private String session;
     private int reminderTime;
-    private int restTime;
+    private boolean isRest;
 
-    public Period(int minutes, String session) {
-        this(minutes, session, 0, 0);
-    }
-
-    public Period(int minutes, String session, int reminderTime, int restTime) {
+    public Period(int minutes, String session, int reminderTime, boolean isRest) {
         this.minutes = minutes;
         this.session = session;
         this.reminderTime = reminderTime;
-        this.restTime = restTime;
+        this.isRest = isRest;
     }
 
     public int getMinutes() {
@@ -33,7 +29,7 @@ public class Period {
         return reminderTime;
     }
 
-    public int getRestTime() {
-        return restTime;
+    public boolean getIsRest() {
+        return isRest;
     }
 }
