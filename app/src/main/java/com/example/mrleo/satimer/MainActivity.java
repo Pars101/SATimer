@@ -1,9 +1,14 @@
 package com.example.mrleo.satimer;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     CountDownTimer countDownTimer;
     Button startButton;
     Button cancelButton;
+    RecyclerView recyclerView;
+    SectionAdapter sectionAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,17 +33,33 @@ public class MainActivity extends AppCompatActivity {
         this.getApplicationContext().startService(new Intent(this.getApplicationContext(), SpeechService.class));
 
         ActivePeriod activePeriod = ActivePeriod.readActivePeriod(getApplicationContext());
+
+        textViewTimer = findViewById(R.id.textViewTimer);
+        textViewSession = findViewById(R.id.textViewSession);
         startButton = findViewById(R.id.StartButton);
         cancelButton = findViewById(R.id.StopButton);
 
+        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        sectionAdapter = new SectionAdapter(new PeriodManager().getPeriods());
+        recyclerView.setAdapter(sectionAdapter);
+
         if(activePeriod != null && activePeriod.getStartPeriod() >= 0){
+            sectionAdapter.setSelectedItem(activePeriod.getStartPeriod());
+            sectionAdapter.setEnabled(false);
+
             startButton.setEnabled(false);
             cancelButton.setEnabled(true);
 
-            startButton.setBackgroundResource(R.drawable.start_gray);
+            startButton.setBackgroundResource(R.drawable.start_green);
             cancelButton.setBackgroundResource(R.drawable.stop_black);
         }
         else{
+            sectionAdapter.setSelectedItem(-1);
+            sectionAdapter.setEnabled(true);
+
             startButton.setEnabled(true);
             cancelButton.setEnabled(false);
 
@@ -44,14 +67,18 @@ public class MainActivity extends AppCompatActivity {
             cancelButton.setBackgroundResource(R.drawable.stop_gray);
         }
 
-        final int currentPeriod = 0;
+
+
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startButton.setEnabled(false);
                 cancelButton.setEnabled(true);
-                startButton.setBackgroundResource(R.drawable.start_gray);
+                startButton.setBackgroundResource(R.drawable.start_green);
                 cancelButton.setBackgroundResource(R.drawable.stop_black);
+                int currentPeriod = sectionAdapter.getSelectedItem() == -1 ? 0 : sectionAdapter.getSelectedItem();
+                sectionAdapter.setSelectedItem(currentPeriod);
+                sectionAdapter.setEnabled(false);
                 ActivePeriod.saveActivePeriod(getApplicationContext(), new ActivePeriod(currentPeriod, System.currentTimeMillis()));
                 Alarm.setAlarm(getApplicationContext(), currentPeriod);
                 updateClock();
@@ -68,11 +95,34 @@ public class MainActivity extends AppCompatActivity {
                 Alarm.cancelAlarm(getApplicationContext());
                 ActivePeriod.clearActivePeriod(getApplicationContext());
                 updateClock();
+                sectionAdapter.notifyItemChanged(sectionAdapter.getSelectedItem());
+                sectionAdapter.setSelectedItem(-1);
+                sectionAdapter.setEnabled(true);
             }
         });
 
-        textViewTimer = findViewById(R.id.textViewTimer);
-        textViewSession = findViewById(R.id.textViewSession);
+        if(Warning.showWarning(getApplicationContext())) {
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            } else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("Note")
+                    .setMessage("SAT is a trademark registered by the College Board, which is not affiliated with, and does not endorse, this app.")
+                    .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                        }
+                    })
+                    .setNegativeButton("Don't show this again", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Warning.doNotShowWarningAgain(getApplicationContext());
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
     }
 
     @Override
@@ -124,6 +174,9 @@ public class MainActivity extends AppCompatActivity {
             if(!hasActivePeriod){
                 startButton.setBackgroundResource(R.drawable.start_black);
                 cancelButton.setBackgroundResource(R.drawable.stop_gray);
+                startButton.setEnabled(true);
+                cancelButton.setEnabled(false);
+                sectionAdapter.setEnabled(true);
             }
         }
         else{
