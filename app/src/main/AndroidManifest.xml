@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.mrleo.satimer">
+    package="com.mrleo.satimer">
 
     <application
         android:allowBackup="true"
@@ -18,7 +18,7 @@
         </activity>
 
         <receiver
-            android:name="com.example.mrleo.satimer.Alarm"
+            android:name="com.mrleo.satimer.Alarm"
             android:enabled="true"
             android:exported="true">
         </receiver>

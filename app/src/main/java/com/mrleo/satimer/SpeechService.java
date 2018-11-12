@@ -1,4 +1,4 @@
-package com.example.mrleo.satimer;
+package com.mrleo.satimer;
 
 import android.app.Service;
 import android.content.Intent;

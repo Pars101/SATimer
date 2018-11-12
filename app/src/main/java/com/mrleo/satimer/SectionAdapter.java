@@ -1,4 +1,4 @@
-package com.example.mrleo.satimer;
+package com.mrleo.satimer;
 
 import android.graphics.Color;
 import android.support.v7.widget.CardView;

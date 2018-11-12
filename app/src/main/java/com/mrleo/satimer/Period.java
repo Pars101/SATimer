@@ -1,4 +1,4 @@
-package com.example.mrleo.satimer;
+package com.mrleo.satimer;
 
 /**
  * Created by mrleo on 11/2/2018.
